@@ -1,0 +1,11 @@
+{
+  "seedlink_to_zejf": {
+    "enabled": true,
+    "seedlink_host": "seedlink.eqcitizen.org",
+    "seedlink_port": 18000,
+    "seedlink_network": "XX",
+    "seedlink_station": "EQ002",
+    "seedlink_channel": "HHZ",
+    "zejf_server_port": 6222
+  }
+}
