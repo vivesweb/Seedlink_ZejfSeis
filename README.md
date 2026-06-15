@@ -236,6 +236,53 @@ The `log_id` counter is initialized at startup to `unix_timestamp × 100 + micro
 
 ---
 
+# Production & Security: Reverse Proxy with Nginx
+
+By default, this C service exposes a direct port for communication. However, for production environments, **it is highly recommended not to expose the service's native port directly to the public Internet**. 
+
+Using **Nginx** as a reverse proxy (configured in TCP/UDP `stream` mode) provides several key security and operational benefits:
+
+* **Attack Mitigation:** Allows you to limit simultaneous connections per IP to prevent service saturation or Denial of Service (DoS) attacks.
+* **Isolation:** The C binary only needs to listen locally (`127.0.0.1`), significantly reducing the attack surface.
+* **Timeout Management:** Safely handles timeouts for inactive or hung connections.
+* **Auditing & Logging:** Centralizes access and error logs with an optimized format for monitoring.
+
+### Nginx Configuration Example (`nginx.conf`)
+
+Make sure to place this configuration inside the `stream { ... }` block of your Nginx configuration (and **not** inside the `http` block), as it handles raw TCP traffic for protocols like Seedlink:
+
+```nginx
+# ==============================================================================
+# Security Configuration for the Service (TCP Proxy)
+# ==============================================================================
+
+# Backend definition: The C service runs locally on port 6221
+upstream seedlink_zejfseis {
+    server 127.0.0.1:6221;
+}
+
+# Public secure port for clients (e.g., Swarm, etc.)
+server {
+    listen 6222;
+    
+    # Abuse mitigation: Limits to a maximum of 12 simultaneous connections
+    # Note: Requires the 'seedlink_conn' zone to be defined in the stream block
+    limit_conn seedlink_conn 12;
+    
+    # Security timeouts
+    proxy_connect_timeout 5s;   # Max time to establish a connection with the C backend
+    proxy_timeout 600s;         # Max time of inactivity before dropping the connection
+
+    # Dedicated logging for auditing and debugging
+    access_log /var/log/nginx/seedlink_zejfseis_access.log seedlink;
+    error_log  /var/log/nginx/seedlink_zejfseis_error.log warn;
+    
+    # Forward the sanitized traffic to the backend
+    proxy_pass seedlink_zejfseis;
+}
+```
+---
+
 ## License
 
 Part of the [EqCitizen](https://eqcitizen.org) seismic monitoring project.  
