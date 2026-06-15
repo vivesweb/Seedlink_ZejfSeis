@@ -88,14 +88,14 @@ The values shown below are also the compiled-in **fallback defaults** if the key
 }
 ```
 
-| Field               | Type    | Description                                      |
-|---------------------|---------|--------------------------------------------------|
-| `seedlink_host`     | string  | Hostname or IP of the upstream SeedLink server   |
-| `seedlink_port`     | integer | TCP port of the SeedLink server (default: 18000) |
-| `seedlink_network`  | string  | SEED network code (e.g. `XX`)                    |
-| `seedlink_station`  | string  | SEED station code (e.g. `EQ002`)                 |
-| `seedlink_channel`  | string  | SEED channel code (e.g. `HHZ`)                   |
-| `zejf_server_port`  | integer | TCP port to listen on for ZejfSeis clients        |
+| Field               | Type    | Description                                                |
+|---------------------|---------|------------------------------------------------------------|
+| `seedlink_host`     | string  | Hostname or IP of the upstream SeedLink server             |
+| `seedlink_port`     | integer | TCP port of the SeedLink server (default: 18000)           |
+| `seedlink_network`  | string  | SEED network code (e.g. `XX`)                              |
+| `seedlink_station`  | string  | SEED station code (e.g. `EQ002`)                           |
+| `seedlink_channel`  | string  | SEED channel code (e.g. `HHZ`)                             |
+| `zejf_server_port`  | integer | TCP port to listen on for ZejfSeis clients (default: 6222) |
 
 > **Note:** Configuration is read once at startup. Restart the process to apply changes.
 
