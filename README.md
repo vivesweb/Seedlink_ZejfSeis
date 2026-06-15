@@ -9,7 +9,7 @@ A lightweight C daemon that connects to a remote SeedLink server as a client, de
 ## Overview
 
 ```
-┌─────────────────────┐        SeedLink v2        ┌───────────────────┐
+┌─────────────────────┐        SeedLink v2         ┌───────────────────┐
 │  Remote SeedLink    │ ◄────────────────────────► │  seedlink_zejf    │
 │  Server             │  HELLO/STATION/SELECT/     │  (this program)   │
 │  (e.g. EqCitizen)   │  DATA/END → MiniSEED v2    │                   │
@@ -36,7 +36,7 @@ The bridge maintains a persistent connection to the upstream SeedLink server and
 - Handles ZejfSeis commands: `realtime`, `getdata`, `datahour_check`, `heartbeat`
 - Responds to historical data requests (`getdata`) with an empty block — no disk storage required
 - Up to **32 simultaneous ZejfSeis clients**
-- Configuration loaded from `data/ranges.default.json` — no recompilation needed
+- Configuration loaded from `data/ranges.json` — no recompilation needed
 - Auto-reconnect on upstream disconnection
 - Verbose diagnostic logging on stdout
 
@@ -71,7 +71,7 @@ gcc -Wall -O2 -o seedlink_zejf seedlink_zejf.c -lm -lpthread -lmseed
 
 ## Configuration
 
-Parameters are read from `data/ranges.default.json` under the `"seedlink_to_zejf"` key.  
+Parameters are read from `data/ranges.json` under the `"seedlink_to_zejf"` key.  
 The values shown below are also the compiled-in **fallback defaults** if the key is missing.
 
 ```json
@@ -108,7 +108,7 @@ cd source/
 ./seedlink_zejf
 ```
 
-Run from the `source/` directory so that the relative path `../data/ranges.default.json` resolves correctly.  
+Run from the `source/` directory so that the relative path `../data/ranges.json` resolves correctly.  
 Alternatively, wrap it in a systemd service or run it inside a `tmux`/`screen` session.
 
 ### Expected startup output
